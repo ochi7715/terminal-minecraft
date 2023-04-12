@@ -1,6 +1,4 @@
 
-// good luck deciphering this mess
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -10,7 +8,6 @@
 
 #define X_PIXELS 500
 #define Y_PIXELS 180
-// in radians:
 #define VIEW_WIDTH 1
 #define VIEW_HEIGHT 0.7
 
@@ -35,8 +32,6 @@ typedef struct Vector{
 	float z;
 } vect;
 
-// used for 2 angles as viewing direction
-// first angles measuered from middle down, second is zero when looking in X direction
 typedef struct Vector2{
 	float psi;
 	float phi;
@@ -152,7 +147,6 @@ vect **init_directions(vect2 view) {
 		dir[i] = malloc(sizeof(vect) * X_PIXELS);
 	}
 
-	// populate dir array
 	for (int y_pix = 0; y_pix < Y_PIXELS; ++y_pix) {
 		for (int x_pix = 0; x_pix < X_PIXELS; ++x_pix) {
 			vect tmp = vect_add(vect_add(screen_mid_hor, mid_to_left), mid_to_up);
@@ -217,7 +211,6 @@ int on_block_border(vect pos) {
 
 
 char raytrace(vect pos, vect dir, char ***blocks) {
-	// returns char of first block being hit that is not NULL-character
 	float eps = 0.01;
 	while (!ray_outside(pos)) {
 		char c = blocks[(int)pos.z][(int)pos.y][(int)pos.x];
@@ -266,7 +259,7 @@ void get_picture(char **picture, player_pos_view posview, char ***blocks) {
 
 
 void draw_ascii(char **picture) {
-	printf("\033[0;0H");	// jump to position 0 0 to overwrite current picture
+	printf("\033[0;0H");
 	for (int i = 0; i < Y_PIXELS; ++i) {
 		for (int j = 0; j < X_PIXELS; ++j) {
 			printf("%c", picture[i][j]);
@@ -321,7 +314,6 @@ void update_posview(player_pos_view *posview, char*** blocks) {
 
 
 vect get_current_block(player_pos_view posview, char ***blocks) {
-	// exactly like raytrace for middle ray, but returns position of block that was hit
 	float eps = 0.01;
 	vect pos = posview.pos;
 	vect dir = angles_to_vect(posview.view);
@@ -357,8 +349,7 @@ vect get_current_block(player_pos_view posview, char ***blocks) {
 
 void place_block(vect pos, char ***blocks, char block) {
 	int x = (int) pos.x, y = (int) pos.y, z = (int) pos.z;
-	// find out on which face to place new block: place it on face to which pos is closest
-	// faces 0-5: x+, x-, y+, y-, z+, z-
+
 
 	float dists[6];
 	dists[0] = fabsf(x+1-pos.x);
@@ -418,10 +409,8 @@ int main(void) {
 	int i = 0;
 	int place_block_allowed = 1;
 	while (i >= 0) {
-		// updates position and view based on keyboard inputs
 		update_posview(&posview, blocks);
 		
-		// get block currently pointed at (i.e. block in the middle of the view), mark it visibly
 		vect current_block = get_current_block(posview, blocks);
 		int have_current_block = !ray_outside(current_block);
 		int current_block_x = (int) current_block.x;
@@ -451,7 +440,6 @@ int main(void) {
 		}
 		// creates picture
 		get_picture(picture, posview, blocks);
-		// reset current_block char
 		if (have_current_block && !removed_block) {
 			blocks[current_block_z][current_block_y][current_block_x] = current_block_c;
 		}
