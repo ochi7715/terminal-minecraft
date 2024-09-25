@@ -2,7 +2,7 @@
 
 **Overview**
 
-This is a simple terminal-based Minecraft-like application written in C using the X11 library for keyboard input handling. The program allows the user to navigate a 3D environment, place and remove blocks, and view the scene from a first-person perspective.
+This is a simple terminal-based Minecraft-like application written in C using the X11 library for keyboard input handling. This program allows the user to navigate a 3D environment, place and remove blocks, and view the scene from a first-person perspective.
 
 **Dependencies**
 
@@ -13,7 +13,7 @@ X11 library: Xlib.h
 X11 Keysym library: X11/keysym.h
 
 **Compilation**
-Ensure that the X11 development libraries are installed on your system. Compile the program using a command like:
+Ensure that the X11 development libraries are installed on your system. Compile the program using the command:
 
 ```gcc minecraft_terminal.c -o minecraft_terminal -lX11 -lm```
 
